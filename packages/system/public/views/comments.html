@@ -1,0 +1,40 @@
+<section ng-cloak data-ng-controller="CommentsController" data-ng-init="find()">
+	<div class="container-fluid">
+		<div class="guestbook-post col-md-12" ng-repeat="comment in comments">
+			<div class="comment-header col-md-12">
+				<div class="author col-md-6">{{comment.user.name}}</div>
+				<div class="comment-data col-md-6">
+					<div class="comment-date" ng-if="!comment.edited">{{comment.created | date: 'medium'}}</div>
+					<div class="comment-date-edited" ng-if="comment.edited">edited {{comment.lastModified | date: 'medium'}}</div>
+					<div class="comment-date-controls">
+						<a class="btn comment-remove" title="Remove" ng-show="hasAuthorization(comment)" data-ng-click="remove(comment);">
+							<i class="glyphicon glyphicon-trash"></i>
+						</a>
+						<a class="btn comment-edit" title="Edit" ng-show="hasAuthorization(comment) && !comment.isEditing" data-ng-click="comment.isEditing = !comment.isEditing">
+							<i class="glyphicon glyphicon-edit"></i>
+						</a>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<p class="comment" ng-show="!comment.isEditing">{{comment.content}}</p>
+			<form name="editForm" ng-show="hasAuthorization(comment) && comment.isEditing" class="form-horizontal col-md-12" role="form" novalidate>
+				<div class="form-group" ng-class="{ 'has-error' : editSubmitted && editForm.content.$invalid }">
+					<div class="comment-edit-box" >
+						<textarea class="form-control guestbook-input" name="content" ng-model="comment.content" required></textarea>
+					</div>
+					<div ng-show="editSubmitted && editForm.content.$invalid" class="help-block">
+						<p ng-show="editForm.content.$error.required">Content is required</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<button mean-token="'update-submit'" type="submit" ng-click="update(comment, editForm.$valid)" class="submit col-md-5">Save</button>
+					<button type="cancel" class="cancel col-md-5" ng-click="comment.isEditing = !comment.isEditing">Cancel</button>
+				</div>
+			</form>
+		</div>
+		<h2 class="no-comments" data-ng-hide="!comments || comments.length">No comments yet.</h2>
+		<guestbook-input>
+		</guestbook-input>
+	</div>
+</section>

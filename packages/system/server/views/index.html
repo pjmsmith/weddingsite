@@ -1,0 +1,10 @@
+{% extends 'layouts/default.html' %}
+{% block content %}
+  <summary class="warning-msg">Check back closer to the big day for final details</summary>
+  <time class="countdown">July 23, 2016</time>
+  <section data-ui-view></section>
+  <script type="text/javascript">
+    window.user = {{user|json|safe}};
+    window.modules = null;
+  </script>
+{% endblock %}

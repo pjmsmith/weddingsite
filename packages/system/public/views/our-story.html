@@ -1,0 +1,23 @@
+<h1>Our Story</h1>
+<div class="container-fluid">
+	<div ng-cloak class="row" data-ng-controller="StoryController">
+		<div class="col-md-6">
+			<story person="bride" data-ng-controller="StoryController" ng-init="findGroup('bride')">
+			</story>
+		</div>
+		<div class="col-md-6">
+			<story person="groom" data-ng-controller="StoryController" ng-init="findGroup('groom')">
+			</story>
+		</div>
+		<div class="separator"></div>
+		<div class="col-md-12">
+			<story person="couple" data-ng-controller="StoryController" ng-init="findGroup('couple')">
+			</story>
+		</div>
+		<div class="separator"></div>
+		<div class="col-md-12">
+			<story person="proposal" data-ng-controller="StoryController" ng-init="findGroup('proposal')">
+			</story>
+		</div>
+	</div>
+</div>

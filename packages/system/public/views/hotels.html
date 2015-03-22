@@ -1,0 +1,158 @@
+<ul class="list-unstyled">
+	<img width="115" height="25" class="pull-right" alt="Powered by Yelp, white" src="https://s3-media1.fl.yelpassets.com/assets/2/www/img/1589098a542f/developers/Powered_By_Yelp_White.png"></img>
+	<div class="clearfix"></div><br/>
+	<a class="btn add" title="Add" ng-show="hasAuthorization() && !isCreatingNew" data-ng-click="isCreatingNew = !isCreatingNew">
+		Add New Hotel
+		<i class="glyphicon glyphicon-plus"></i>
+	</a>
+	<div class="hotel-form" ng-show="hasAuthorization() && isCreatingNew">
+		<div class="edit-controls col-md-12">Add New Hotel</div>
+		<form name="addHotelForm" class="edit-form col-md-12" ng-show="hasAuthorization() && isCreatingNew" role="form" novalidate>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addHotelForm.businessId.$invalid }">
+				<label for="businessId" class="col-md-3">BusinessID:</label>
+				<input class="hotel-edit col-md-12" ng-model="businessId" name="businessId"></input>
+				<div ng-show="submitted && addHotelForm.businessId.$invalid" class="help-block">
+					<p ng-show="addHotelForm.businessId.$error.required">BusinessID is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addHotelForm.category.$invalid }">
+				<label for="category" class="col-md-3">Category:</label>
+				<input class="hotel-edit col-md-12" ng-model="category" name="category"></input>
+				<div ng-show="submitted && addHotelForm.category.$invalid" class="help-block">
+					<p ng-show="addHotelForm.category.$error.required">Category is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addHotelForm.description.$invalid }">
+				<label for="description" class="col-md-3">Description:</label>
+				<textarea class="hotel-edit col-md-12" ng-model="description" name="description"></textarea>
+				<div ng-show="submitted && addHotelForm.description.$invalid" class="help-block">
+					<p ng-show="addHotelForm.description.$error.required">Description is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addHotelForm.instructions.$invalid }">
+				<label for="instructions" class="col-md-3">Instructions:</label>
+				<textarea class="hotel-edit col-md-12" ng-model="instructions" name="instructions"></textarea>
+				<div ng-show="submitted && addHotelForm.instructions.$invalid" class="help-block">
+					<p ng-show="addHotelForm.instructions.$error.required">Instructions are required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addHotelForm.url.$invalid }">
+				<label for="url" class="col-md-3">URL:</label>
+				<input class="hotel-edit col-md-9" ng-model="url" name="url"></input>
+				<div ng-show="submitted && addHotelForm.url.$invalid" class="help-block">
+					<p ng-show="addHotelForm.url.$error.required">URL is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addHotelForm.sort.$invalid }">
+				<label for="sort" class="col-md-3">Sort:</label>
+				<input class="hotel-edit col-md-9" ng-model="sort" name="sort"></input>
+				<div ng-show="submitted && addHotelForm.sort.$invalid" class="help-block">
+					<p ng-show="addHotelForm.sort.$error.required">Sort is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group">
+				<button mean-token="'update-submit'" type="submit" ng-click="create(addHotelForm.$valid)" class="submit col-md-5">Save</button>
+				<button type="cancel" class="cancel col-md-5" ng-click="isCreatingNew = !isCreatingNew">Cancel</button>
+			</div>
+		</form>
+	</div>
+	<li ng-repeat="hotel in hotels | orderBy:'sort'">
+		<div class="row">
+			<div class="edit-controls col-md-12" ng-show="hasAuthorization() && hotel._id">
+				<a class="btn edit" title="Edit" ng-show="hasAuthorization() && !hotel.isEditing && hotel._id" data-ng-click="hotel.isEditing = !hotel.isEditing">
+					<i class="glyphicon glyphicon-edit"></i>
+				</a>
+				<a class="btn remove" title="Remove" ng-show="hasAuthorization() && hotel._id" data-ng-click="remove(hotel);">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
+				Edit Hotel
+				<div class="clearfix"></div>
+			</div>
+			<div class="hotel-form" ng-show="hasAuthorization() && hotel.isEditing">
+				<form name="editHotelForm" class="edit-form col-md-12 hotel-edit-form" ng-show="hasAuthorization() && hotel.isEditing" role="form" novalidate>
+					<div class="form-group" ng-class="{ 'has-error' : submitted && editHotelForm.businessId.$invalid }">
+						<label for="businessId" class="col-md-3">BusinessID:</label>
+						<textarea class="hotel-edit col-md-12" ng-model="hotel.businessId" name="businessId"></textarea>
+						<div ng-show="submitted && editHotelForm.businessId.$invalid" class="help-block">
+							<p ng-show="editHotelForm.businessId.$error.required">BusinessID is required</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group" ng-class="{ 'has-error' : submitted && editHotelForm.category.$invalid }">
+						<label for="category" class="col-md-3">Category:</label>
+						<input class="hotel-edit col-md-12" ng-model="hotel.category" name="category"></input>
+						<div ng-show="submitted && editHotelForm.category.$invalid" class="help-block">
+							<p ng-show="editHotelForm.category.$error.required">Category is required</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group" ng-class="{ 'has-error' : submitted && editHotelForm.description.$invalid }">
+						<label for="description" class="col-md-3">Description:</label>
+						<textarea class="hotel-edit col-md-12" ng-model="hotel.description" name="description"></textarea>
+						<div ng-show="submitted && editHotelForm.description.$invalid" class="help-block">
+							<p ng-show="editHotelForm.description.$error.required">Description is required</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group" ng-class="{ 'has-error' : submitted && editHotelForm.instructions.$invalid }">
+						<label for="instructions" class="col-md-3">Instructions:</label>
+						<textarea class="hotel-edit col-md-12" ng-model="hotel.instructions" name="instructions"></textarea>
+						<div ng-show="submitted && editHotelForm.instructions.$invalid" class="help-block">
+							<p ng-show="editHotelForm.instructions.$error.required">Instructions are required</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group" ng-class="{ 'has-error' : submitted && editHotelForm.url.$invalid }">
+						<label for="url" class="col-md-3">URL:</label>
+						<input class="hotel-edit col-md-9" ng-model="hotel.url" name="url"></input>
+						<div ng-show="submitted && editHotelForm.url.$invalid" class="help-block">
+							<p ng-show="editHotelForm.url.$error.required">URL is required</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group" ng-class="{ 'has-error' : submitted && editHotelForm.sort.$invalid }">
+						<label for="sort" class="col-md-3">Sort:</label>
+						<input class="hotel-edit col-md-9" ng-model="hotel.sort" name="sort"></input>
+						<div ng-show="submitted && editHotelForm.sort.$invalid" class="help-block">
+							<p ng-show="editHotelForm.sort.$error.required">Sort is required</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="form-group">
+						<button mean-token="'update-submit'" type="submit" ng-click="update(hotel, editHotelForm.$valid)" class="submit col-md-5">Save</button>
+						<button type="cancel" class="cancel col-md-5" ng-click="hotel.isEditing = !hotel.isEditing">Cancel</button>
+					</div>
+				</form>
+			</div>
+			<div class="hotel-item col-md-12">
+				<div class="col-md-3">
+					<img ng-src="{{hotel.photo}}" class="img-responsive hotel-photo img-thumbnail center-block col-md-12">
+					<div class="clearfix"></div><br/>
+					<img class="center-block" width="84" height="17" alt="Yelp-branded stars" ng-src="{{hotel.rating}}"></img>
+				</div>
+				<address class="col-md-3">
+					<strong>{{hotel.name}}</strong><br/>
+					<span ng-repeat="addressLine in hotel.address">
+						{{addressLine}}<br/>
+					</span>
+					<abbr title="Phone"><i class="glyphicon glyphicon-phone"></i></abbr> {{hotel.phone}}<br/>
+					<abbr title="Website"><i class="glyphicon glyphicon-globe"></i></abbr> <a target="_blank" href="http://{{hotel.url}}">Book {{hotel.name}}</a>
+				</address>
+				<div class="yelp col-md-6">
+					<blockquote>
+						<p>
+							{{hotel.yelpSnippet}}
+						</p>
+					</blockquote>
+					<a target="_blank" href="{{hotel.yelpUrl}}"><img width="115" height="25" alt="Reviews from Yelp, red" src="https://s3-media3.fl.yelpassets.com/assets/2/www/img/3049d7633b6e/developers/reviewsFromYelpRED.gif"></img></a>
+				</div>
+			</div>
+		</div>
+	</li>
+</ul>

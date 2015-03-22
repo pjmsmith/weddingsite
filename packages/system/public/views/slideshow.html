@@ -1,0 +1,95 @@
+<div ng-cloak ng-controller="SlideshowController" ng-init="find()">
+	<div ng-controller="CarouselController">
+		<a class="btn add" title="Add" ng-show="hasAuthorization() && !isCreatingNew" data-ng-click="isCreatingNew = !isCreatingNew">
+			Add New Photo
+			<i class="glyphicon glyphicon-plus"></i>
+		</a>
+		<div class="photo-form" ng-show="hasAuthorization() && isCreatingNew">
+			<div class="edit-controls col-md-12">Add New Photo</div>
+			<form name="addPhotoForm" class="edit-form col-md-12" ng-show="hasAuthorization() && isCreatingNew" role="form" novalidate>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && addPhotoForm.url.$invalid }">
+					<label for="url" class="col-md-3">URL:</label>
+					<input class="photo-edit col-md-12" ng-model="url" name="url"></input>
+					<div ng-show="submitted && addPhotoForm.url.$invalid" class="help-block">
+						<p ng-show="addPhotoForm.url.$error.required">URL is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && addPhotoForm.caption.$invalid }">
+					<label for="caption" class="col-md-3">Caption:</label>
+					<input class="photo-edit col-md-12" ng-model="caption" name="caption"></input>
+					<div ng-show="submitted && addPhotoForm.caption.$invalid" class="help-block">
+						<p ng-show="addPhotoForm.caption.$error.required">Caption is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && addPhotoForm.sort.$invalid }">
+					<label for="sort" class="col-md-3">Sort:</label>
+					<input class="photo-edit col-md-9" ng-model="sort" name="sort"></input>
+					<div ng-show="submitted && addPhotoForm.sort.$invalid" class="help-block">
+						<p ng-show="addPhotoForm.sort.$error.required">Sort is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<button mean-token="'update-submit'" type="submit" ng-click="create(addPhotoForm.$valid)" class="submit col-md-5">Save</button>
+					<button type="cancel" class="cancel col-md-5" ng-click="isCreatingNew = !isCreatingNew">Cancel</button>
+				</div>
+			</form>
+		</div>
+		<div class="clearfix"></div>
+		<!-- Wrapper for slides -->
+		<carousel interval="slideInterval">
+			<slide ng-repeat="photo in photos | orderBy:'sort'" active="photo.active">
+				<div class="edit-controls col-md-12 photo-edit-form" ng-show="hasAuthorization() && photo._id">
+					<a class="btn edit" title="Edit" ng-show="hasAuthorization() && !photo.isEditing && photo._id" data-ng-click="photo.isEditing = !photo.isEditing">
+						<i class="glyphicon glyphicon-edit"></i>
+					</a>
+					<a class="btn remove" title="Remove" ng-show="hasAuthorization() && photo._id" data-ng-click="remove(photo);">
+						<i class="glyphicon glyphicon-trash"></i>
+					</a>
+					Edit Photo
+				</div>
+				<div class="clearfix"></div>
+				<div class="photo-form" ng-show="hasAuthorization() && photo.isEditing">
+					<form name="editPhotoForm" class="edit-form col-md-12 photo-edit-form" ng-show="hasAuthorization() && photo.isEditing" role="form" novalidate>
+						<div class="form-group" ng-class="{ 'has-error' : submitted && editPhotoForm.url.$invalid }">
+							<label for="url" class="col-md-3">URL:</label>
+							<input class="photo-edit col-md-12" ng-model="photo.url" name="url"></input>
+							<div ng-show="submitted && editPhotoForm.url.$invalid" class="help-block">
+								<p ng-show="editPhotoForm.url.$error.required">URL is required</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="form-group" ng-class="{ 'has-error' : submitted && editPhotoForm.caption.$invalid }">
+							<label for="caption" class="col-md-3">Caption:</label>
+							<input class="photo-edit col-md-12" ng-model="photo.caption" name="caption"></input>
+							<div ng-show="submitted && editPhotoForm.caption.$invalid" class="help-block">
+								<p ng-show="editPhotoForm.caption.$error.required">Caption is required</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="form-group" ng-class="{ 'has-error' : submitted && editPhotoForm.sort.$invalid }">
+							<label for="sort" class="col-md-3">Sort:</label>
+							<input class="photo-edit col-md-9" ng-model="photo.sort" name="sort"></input>
+							<div ng-show="submitted && editPhotoForm.sort.$invalid" class="help-block">
+								<p ng-show="editPhotoForm.sort.$error.required">Sort is required</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="form-group">
+							<button mean-token="'update-submit'" type="submit" ng-click="update(photo, editPhotoForm.$valid)" class="submit col-md-5">Save</button>
+							<button type="cancel" class="cancel col-md-5" ng-click="photo.isEditing = !photo.isEditing">Cancel</button>
+						</div>
+					</form>
+				</div>
+				<div ng-show="!photo.isEditing">
+					<img class="slide-photo img-responsive" ng-src="{{photo.url}}">
+					<div class="carousel-caption">
+					{{photo.caption}}
+					</div>
+				</div>
+			</slide>
+		</carousel>
+	</div>
+</div>

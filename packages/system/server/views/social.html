@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" itemscope="itemscope" itemtype="http://schema.org/Product">
+{% include './includes/head.html' %}
+	<body style="background-color: black">
+		<div class="container" style="z-index: 0">
+			<div id="photos">
+			</div>
+		</div>
+		<div class="button-bar col-md-12" style="z-index: 100000">
+			<div class="center-block slideshow-btn-wrapper">
+				<button type="button" class="btn btn-success slideshow-btn" id="startButton">Start</button>
+				<button type="button" class="btn btn-primary slideshow-btn" id="pauseButton">Pause</button>
+				<button type="button" class="btn btn-default slideshow-btn" id="nextButton">Next</button>
+			</div>
+		</div>
+	{% include './includes/foot.html' %}
+	<script>
+		(function() {
+			var socket = io.connect('http://127.0.0.1:3000');
+			var self = this;
+			var lastTime = null;
+			var lastLength = 0;
+			var startClicked = false;
+			var pauseClicked = false;
+
+			var SocialSlideshow = function(container, interval) {
+				this.init(container);
+				if (typeof interval !== 'undefined') {
+					this.interval = interval;
+				}
+			};
+			SocialSlideshow.prototype = {
+				interval: 5000,
+				currentPhoto: null,
+				photos: [],
+				newPhotos: [],
+				container: null,
+				timer: null,
+				newPhotoId: -1,
+				highestZIndex: 0,
+				photosShowing: 0,
+				counter: 0,
+
+				init: function(container) {
+					this.container = container;
+				},
+
+				queuePhoto: function(photo) {
+					this.newPhotos.push(photo);
+					console.log('Queued Photo: ' + this.newPhotos.length);
+				},
+
+				nextPhoto: function(loadAll) {
+					if (loadAll) {
+						for (var i = 0; i < this.newPhotos.length; i++) {
+							this.photos.push(this.newPhotos[i]);
+						}
+						this.newPhotos = [];
+					}
+					if (this.newPhotos.length > 0) {
+						this.showPhoto(this.newPhotos, this.photosShowing, ++this.newPhotoId, function() {
+							var photo = this.newPhotos.shift();
+							if (photo) {
+								this.photos.push(photo);
+							}
+							console.log('Unique Photos Shown: ' + this.photos.length);
+						}.bind(this));
+					} else {
+						if (this.currentPhoto === null || this.currentPhoto >= this.photos.length) {
+							this.currentPhoto = 0;
+						}
+						this.highestZIndex += 1;
+						this.showPhoto(this.photos, this.currentPhoto++, this.highestZIndex);
+					}
+				},
+
+				showPhoto: function(photos, i, id, callback) {
+					//insert photo div
+					$(this.container).append('<img id="photo-' + id + '" class="social-photo img-responsive" style="z-index:' + id + '" src="' + photos[i].url + '"/>');
+					this.photosShowing += 1;
+					this.counter += 1;
+
+					console.log('Photos showing: ' + this.photosShowing + '; Photos Shown: ' + this.counter);
+					
+					//change effect and position
+					setTimeout(function() {
+						console.log('adding animation for ' + id);
+						var docWidth = $(document).width();
+						var divWidth = $('#photo-' + id).width();
+						var widthMax = docWidth - divWidth;
+						$('#photo-' + id).css({
+							left: Math.floor(Math.random() * widthMax)
+						});
+						$('#photo-' + id).addClass('slide-top-bottom');
+					}, 500);
+
+					var self = this;
+					//remove after a few seconds
+					$('#photo-' + id).on('animationend', function() {
+						$('#photo-' + id).remove();
+						self.photosShowing -= 1;
+						console.log('Photos left: '  + self.photosShowing);
+						if (self.photosShowing === 0) {
+							self.highestZIndex = 0;
+						}
+						if (typeof callback !== 'undefined' && typeof callback === 'function') {
+							callback();
+						}
+					});
+				},
+
+				start: function() {
+					var self = this;
+					self.nextPhoto();
+					this.timer = setInterval(function() {
+						self.nextPhoto();
+					}, this.interval + 2000);
+				},
+
+				pause: function() {
+					clearInterval(this.timer);
+				},
+
+				stop: function() {
+					clearInterval(this.timer);
+					this.currentPhoto = null;
+					this.nextPhotoId = -1;
+					this.highestZIndex = 0;
+					this.photosShowing = 0;
+					this.photosShown = 0;
+					if (this.container && $(this.container)) {
+						$(this.container).empty();
+					}
+				},
+
+				reset: function() {
+					this.stop();
+					photos = [];
+					newPhotos = [];
+				}
+			};
+
+			var slideshow = new SocialSlideshow($('#photos'));
+
+			$('#startButton').click(function() {
+				var btn = $('#startButton');
+				if (!startClicked) {
+					startClicked = true;
+					btn.html('Stop');
+					btn.removeClass('btn-success');
+					btn.addClass('btn-danger');
+					slideshow.start();
+				} else {
+					startClicked = false;
+					btn.html('Start');
+					btn.removeClass('btn-danger');
+					btn.addClass('btn-success');
+					slideshow.stop();
+				}
+			});
+
+			$('#pauseButton').click(function() {
+				slideshow.pause();
+				var btn = $('#startButton');
+				startClicked = false;
+				btn.html('Start');
+				btn.removeClass('btn-danger');
+				btn.addClass('btn-success');
+			});
+
+			$('#nextButton').click(function() {
+				slideshow.pause();
+				var btn = $('#startButton');
+				startClicked = false;
+				btn.html('Start');
+				btn.removeClass('btn-danger');
+				btn.addClass('btn-success');
+				slideshow.nextPhoto(true);
+			});
+
+			socket.on('loadRecent', function(data) {
+				console.log('loading recent photos');
+				var url = data.url;
+				$.ajax({
+					url: url,
+					type: 'GET',
+					crossDomain: true,
+					dataType: 'jsonp'
+				}).done(function (data) {
+					console.log(data);
+					var addAll = !lastTime;
+					for (var i = 0; i < data.data.length; i++) {
+						if (!addAll && data.data[i].created_time < lastTime) {
+							break;
+						}
+						if (data.data[i].images.standard_resolution.url) {
+							slideshow.queuePhoto({
+								url: data.data[i].images.standard_resolution.url
+							});
+						}
+					}
+				});
+
+				//offline test
+				
+				slideshow.queuePhoto("/system/assets/img/story-proposal.jpg");
+				slideshow.queuePhoto("/system/assets/img/story-couple.jpg");
+				slideshow.queuePhoto("/system/assets/img/story-groom.jpg");
+			});
+		})(this);
+	</script>
+	</body>
+</html>

@@ -1,0 +1,103 @@
+ <div data-ng-repeat="store in stores">
+	<div class="col-md-4">
+		<div class="edit-controls" ng-show="hasAuthorization()">
+			<a class="btn edit" title="Edit" ng-show="hasAuthorization() && !store.isEditing && store._id" data-ng-click="store.isEditing = !store.isEditing">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn remove" title="Remove" ng-show="hasAuthorization() && store._id" data-ng-click="remove(store);">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+			Edit Registry
+			<div class="clearfix"></div>
+		</div>
+		<div class="registry-form" ng-show="hasAuthorization() && store.isEditing">
+			<form name="editRegistryForm" class="edit-form col-md-12" ng-show="hasAuthorization() && store.isEditing" role="form" "update(store, editRegistryForm.$valid)" novalidate>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editRegistryForm.name.$invalid }">
+					<label for="name" class="col-md-3">Name:</label>
+					<input class="registry-edit col-md-9" ng-model="store.name" name="name"></input>
+					<div ng-show="submitted && editRegistryForm.name.$invalid" class="help-block">
+						<p ng-show="editRegistryForm.name.$error.required">Name is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editRegistryForm.url.$invalid }">
+					<label for="url" class="col-md-3">URL:</label>
+					<input class="registry-edit col-md-9" ng-model="store.url" name="url"></input>
+					<div ng-show="submitted && editRegistryForm.url.$invalid" class="help-block">
+						<p ng-show="editRegistryForm.url.$error.required">URL is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editRegistryForm.logo.$invalid }">
+					<label for="logo" class="col-md-3">Logo:</label>
+					<input class="registry-edit col-md-9" ng-model="store.logo" name="logo"></input>
+					<div ng-show="submitted && editRegistryForm.logo.$invalid" class="help-block">
+						<p ng-show="editRegistryForm.logo.$error.required">Logo is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editRegistryForm.sort.$invalid }">
+					<label for="sort" class="col-md-3">Sort:</label>
+					<input class="registry-edit col-md-9" ng-model="store.sort" name="sort"></input>
+					<div ng-show="submitted && editRegistryForm.sort.$invalid" class="help-block">
+						<p ng-show="editRegistryForm.sort.$error.required">Sort is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<button mean-token="'update-submit'" type="submit" ng-click="update(store, editRegistryForm.$valid)" class="submit col-md-5">Save</button>
+					<button type="cancel" class="cancel col-md-5" ng-click="store.isEditing = !store.isEditing">Cancel</button>
+				</div>
+			</form>
+		</div>
+		<a href="{{store.url}}" target="_blank" class="registry-btn btn btn-lg btn-primary" title="{{store.name}}" ng-show="!store.isEditing">
+			<div ng-if="!store.logo">{{store.name}}</div>
+			<img class="registry-logo" ng-src="{{store.logo}}" ng-if="store.logo"></img>
+		</a>
+	</div>
+</div>
+<a class="btn add" title="Add" ng-show="hasAuthorization() && !isCreatingNew" data-ng-click="isCreatingNew = !isCreatingNew">
+	Add new registry
+	<i class="glyphicon glyphicon-plus"></i>
+</a>
+<div class="registry-form col-md-4" ng-show="hasAuthorization() && isCreatingNew">
+	<div class="edit-controls col-md-12">Add New Registry</div>
+	<form name="addRegistryForm" class="edit-form col-md-12" ng-show="hasAuthorization() && isCreatingNew" role="form" novalidate>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && addRegistryForm.name.$invalid }">
+			<label for="name" class="col-md-3">Name:</label>
+			<input class="registry-add col-md-9" ng-model="name" name="name"></input>
+			<div ng-show="submitted && addRegistryForm.name.$invalid" class="help-block">
+				<p ng-show="addRegistryForm.name.$error.required">Name is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && addRegistryForm.url.$invalid }">
+			<label for="url" class="col-md-3">URL:</label>
+			<input class="registry-add col-md-9" ng-model="url" name="url"></input>
+			<div ng-show="submitted && addRegistryForm.url.$invalid" class="help-block">
+				<p ng-show="addRegistryForm.url.$error.required">URL is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && addRegistryForm.logo.$invalid }">
+			<label for="logo" class="col-md-3">Logo:</label>
+			<input class="registry-add col-md-9" ng-model="logo" name="logo"></input>
+			<div ng-show="submitted && addRegistryForm.logo.$invalid" class="help-block">
+				<p ng-show="addRegistryForm.logo.$error.required">Logo is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && addRegistryForm.sort.$invalid }">
+			<label for="sort" class="col-md-3">Sort:</label>
+			<input class="registry-add col-md-9" ng-model="sort" name="sort"></input>
+			<div ng-show="submitted && addRegistryForm.sort.$invalid" class="help-block">
+				<p ng-show="addRegistryForm.sort.$error.required">Sort is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group">
+			<button mean-token="'create-submit'" type="submit" class="submit col-md-5" ng-click="create(addRegistryForm.$valid)">Save</button>
+			<button type="cancel" class="cancel col-md-5" ng-click="isCreatingNew = !isCreatingNew">Cancel</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,31 @@
+<nav class="page-header navbar navbar-default" data-ng-controller="HeaderController" ng-click="$event.stopPropagation()">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" ng-click="toggleCollapsibleMenu()" data-toggle="collapse" data-target="#pm-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" ui-sref="home" mean-token="'site-title'">Melissa &amp; Patrick</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="pm-navbar-collapse" ng-click="$parent.collapse = false" collapse="!isCollapsed">
+            <ul class="navbar-nav nav">
+                <li data-ng-repeat="item in menus.main" ui-route="/{{item.link}}" ui-sref-active="active" class="dropdown">
+                    <a mean-token="item.link" ng-if="item.dropdown" data-target="#" href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.title}}<b class="caret"></b></a>
+                    <ul ng-if="item.dropdown" class="dropdown-menu">
+                        <li ng-repeat="subitem in item.dropdown" ui-route="/{{subitem.link}}" ui-sref-active="active" ng-class="{active: $uiRoute, divider: subitem.divider}">
+                            <a mean-token="subitem.link" ui-sref="{{subitem.link}}">{{subitem.title}}</a>
+                        </li>
+                    </ul>
+                    <a mean-token="item.link" ng-if="!item.dropdown" ui-sref="{{item.link}}">{{item.title}}</a>
+                </li>
+                <li data-ng-show="global.authenticated">
+                    <a href="/logout">Log Out</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,161 @@
+<div class="edit-controls col-md-12" ng-show="hasAuthorization()">
+	<a class="btn edit" title="Edit" ng-show="hasAuthorization() && !location.isEditing" data-ng-click="location.isEditing = !location.isEditing">
+		<i class="glyphicon glyphicon-edit"></i>
+	</a>
+	Edit Location
+	<div class="clearfix"></div>
+</div>
+<div class="location-form" ng-show="hasAuthorization() && location.isEditing">
+	<form name="editLocationForm" class="edit-form col-md-12" ng-show="hasAuthorization() && location.isEditing" role="form" novalidate>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.name.$invalid }">
+			<label for="name" class="col-md-3">Name:</label>
+			<input class="location-edit col-md-9" ng-model="location.name" name="name"></input>
+			<div ng-show="submitted && editLocationForm.name.$invalid" class="help-block">
+				<p ng-show="editLocationForm.name.$error.required">Name is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.latitude.$invalid }">
+			<label for="latitude" class="col-md-3">Latitude:</label>
+			<input class="location-edit col-md-9" ng-model="location.latitude" name="latitude"></input>
+			<div ng-show="submitted && editLocationForm.latitude.$invalid" class="help-block">
+				<p ng-show="editLocationForm.latitude.$error.required">Latitude is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.longitude.$invalid }">
+			<label for="longitude" class="col-md-3">Longitude:</label>
+			<input class="location-edit col-md-9" ng-model="location.longitude" name="longitude"></input>
+			<div ng-show="submitted && editLocationForm.longitude.$invalid" class="help-block">
+				<p ng-show="editLocationForm.longitude.$error.required">Longitude is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.details.$invalid }">
+			<label for="details" class="col-md-3">Details:</label>
+			<textarea class="location-edit col-md-9" ng-model="location.details" name="details" ng-model-options="{ updateOn: 'default', debounce: {'default': 5000, 'blur': 0}}"></textarea>
+			<div ng-show="submitted && editLocationForm.details.$invalid" class="help-block">
+				<p ng-show="editLocationForm.details.$error.required">Details are required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.directions.$invalid }">
+			<label for="directions" class="col-md-3">Directions:</label>
+			<textarea class="location-edit col-md-9" ng-model="location.directions" name="directions" ng-model-options="{ updateOn: 'default', debounce: {'default': 5000, 'blur': 0}}"></textarea>
+			<div ng-show="submitted && editLocationForm.directions.$invalid" class="help-block">
+				<p ng-show="editLocationForm.directions.$error.required">Directions are required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.photo.$invalid }">
+			<label for="photo" class="col-md-3">Photo:</label>
+			<input class="location-edit col-md-9" ng-model="location.photo" name="photo"></input>
+			<div ng-show="submitted && editLocationForm.photo.$invalid" class="help-block">
+				<p ng-show="editLocationForm.photo.$error.required">Photo is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : submitted && editLocationForm.photoClass.$invalid }">
+			<label for="photoClass" class="col-md-3">Photo Class:</label>
+			<input class="location-edit col-md-9" ng-model="location.photoClass" name="photoClass"></input>
+			<div ng-show="submitted && editLocationForm.photoClass.$invalid" class="help-block">
+				<p ng-show="editLocationForm.photoClass.$error.required">Photo Class is required</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="form-group" ng-repeat="m in location.markers" ng-form="editMarkerForm">
+			<div class="edit-controls col-md-12" ng-show="hasAuthorization()">
+				<a class="btn remove" title="Remove" ng-show="hasAuthorization()" data-ng-click="removeMarker(location, m);">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
+				Edit Marker
+				<div class="clearfix"></div>
+			</div>
+			<div class="edit-form col-md-12">
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editMarkerForm.latitude.$invalid }">
+					<label for="latitude" class="col-md-3">Latitude:</label>
+					<input class="marker-edit col-md-9" ng-model="m.latitude" name="latitude"></input>
+					<div ng-show="submitted && editMarkerForm.latitude.$invalid" class="help-block">
+						<p ng-show="editMarkerForm.latitude.$error.required">Latitude is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editMarkerForm.longitude.$invalid }">
+					<label for="longitude" class="col-md-3">Longitude:</label>
+					<input class="marker-edit col-md-9" ng-model="m.longitude" name="longitude"></input>
+					<div ng-show="submitted && editMarkerForm.longitude.$invalid" class="help-block">
+						<p ng-show="editMarkerForm.longitude.$error.required">Longitude is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editMarkerForm.labelContent.$invalid }">
+					<label for="labelContent" class="col-md-3">Label Content:</label>
+					<input class="marker-edit col-md-9" ng-model="m.labelContent" name="labelContent"></input>
+					<div ng-show="submitted && editMarkerForm.labelContent.$invalid" class="help-block">
+						<p ng-show="editMarkerForm.labelContent.$error.required">Label Content is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editMarkerForm.labelAnchor.$invalid }">
+					<label for="labelAnchor" class="col-md-3">Label Anchor:</label>
+					<input class="marker-edit col-md-9" ng-model="m.labelAnchor" name="labelAnchor"></input>
+					<div ng-show="submitted && editMarkerForm.labelAnchor.$invalid" class="help-block">
+						<p ng-show="editMarkerForm.labelAnchor.$error.required">Label Anchor is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editMarkerForm.labelClass.$invalid }">
+					<label for="labelClass" class="col-md-3">Label Class:</label>
+					<input class="marker-edit col-md-9" ng-model="m.labelClass" name="labelClass"></input>
+					<div ng-show="submitted && editMarkerForm.labelClass.$invalid" class="help-block">
+						<p ng-show="editMarkerForm.labelClass.$error.required">Label Class is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editMarkerForm.message.$invalid }">
+					<label for="message" class="col-md-3">Message:</label>
+					<input class="marker-edit col-md-9" ng-model="m.message" name="message"></input>
+					<div ng-show="submitted && editMarkerForm.message.$invalid" class="help-block">
+						<p ng-show="editMarkerForm.message.$error.required">Message required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="form-group">
+				<button type="button" class="action col-md-5" ng-show="!location.addingMarker" ng-click="location.addingMarker = !location.addingMarker">Add Marker</button>
+				<div class="clearfix"></div>
+			</div>
+			<button mean-token="'update-submit'" type="submit" ng-click="update(location, editLocationForm.$valid)" class="submit col-md-5">Save</button>
+			<button type="cancel" class="cancel col-md-5" ng-click="location.isEditing = !location.isEditing">Cancel</button>
+		</div>
+	</form>
+	<div class="clearfix"></div>
+</div>
+
+<div class="location-info col-md-12" ng-show="!location.isEditing">
+	<img ng-src="{{location.photo}}" class="{{location.photoClass}}" title="{{location.name}}"></img>
+	<p class="location-details col-md-6" ng-bind-html="location.details">{{location.details}}</p>
+	<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="location-map col-md-12">
+	<ui-gmap-google-map center="map.center" zoom="map.zoom" options="map.options" events="{click: onMapClicked}">
+		<ui-gmap-marker ng-repeat="m in map.markers" coords="m" icon="m.icon" click="onMarkerClicked(m)" idKey="m.id" options="m.options">
+			<ui-gmap-window ng-cloak coords="map.infoWindowWithCustomClass.coords" isIconVisibleOnClick="false" options="{boxClass: 'custom-info-window'}">
+				<p ng-bind-html-unsafe="m.message" class="map-message">{{m.message}}</p>
+			</ui-gmap-window>
+		</ui-gmap-marker>
+	</ui-gmap-google-map>
+</div>
+<div class="clearfix"></div>
+<div class="location-directions col-md-12" ng-show="!location.isEditing">
+	<h2>Directions</h2>
+	<h3>From where you are</h3>
+	<input ng-model="location.customDeparture" class="form-group col-md-5" placeholder="Enter your address"></input>
+	<div class="clearfix"></div>
+	<button type="button" class="action col-md-5" ng-click="updateDirections(location.customDeparture)">Route</button>
+	<div class="clearfix"></div>
+	<p ng-bind-html="location.directions">{{location.directions}}</p>
+</div>

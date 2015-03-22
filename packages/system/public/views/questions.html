@@ -1,0 +1,93 @@
+<div ng-cloak class="faq-section col-md-12">
+	<ul class="col-md-12" ng-repeat="question in questions | orderBy:'sort'">
+		<div class="edit-controls col-md-12" ng-show="$parent.hasAuthorization()"> 
+			<a class="btn edit" title="Edit" ng-show="$parent.hasAuthorization() && !question.isEditing && question._id" data-ng-click="question.isEditing = !question.isEditing">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn remove" title="Remove" ng-show="$parent.hasAuthorization() && question._id" data-ng-click="remove(question);">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+			Edit Question
+			<div class="clearfix"></div>
+		</div>
+		<div class="question-form" ng-show="$parent.hasAuthorization() && question.isEditing">
+			<form name="editQuestionForm" class="edit-form col-md-12" ng-show="$parent.hasAuthorization() && question.isEditing" role="form" novalidate>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editQuestionForm.question.$invalid }">
+					<label for="question" class="col-md-3">Question:</label>
+					<input class="question-edit col-md-12" ng-model="question.question" name="question"></input>
+					<div ng-show="submitted && editQuestionForm.question.$invalid" class="help-block">
+						<p ng-show="editQuestionForm.question.$error.required">Question is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editQuestionForm.answer.$invalid }">
+					<label for="answer" class="col-md-3">Answer:</label>
+					<textarea class="question-edit col-md-12" ng-model="question.answer" name="answer" ng-model-options="{ updateOn: 'default', debounce: {'default': 5000, 'blur': 0}}"></textarea>
+					<div ng-show="submitted && editQuestionForm.answer.$invalid" class="help-block">
+						<p ng-show="editQuestionForm.answer.$error.required">Answer is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' : submitted && editQuestionForm.sort.$invalid }">
+					<label for="sort" class="col-md-3">Sort:</label>
+					<input class="question-edit col-md-9" ng-model="question.sort" name="sort"></input>
+					<div ng-show="submitted && editQuestionForm.sort.$invalid" class="help-block">
+						<p ng-show="editQuestionForm.sort.$error.required">Sort is required</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<button mean-token="'update-submit'" type="submit" ng-click="update(question, editQuestionForm.$valid)" class="submit col-md-5">Save</button>
+					<button type="cancel" class="cancel col-md-5" ng-click="question.isEditing = !question.isEditing">Cancel</button>
+				</div>
+			</form>
+		</div>
+		<li class="question col-md-12" ng-show="!question.isEditing">
+			<h3 class="question">
+				{{question.question}}
+			</h3>
+			<p class="answer" ng-bind-html="question.answer">
+				{{question.answer}}
+			</p>
+		</li>
+		<div class="clearfix"></div>
+	</ul>
+	<a class="btn add" title="Add" ng-show="hasAuthorization() && !isCreatingNew" data-ng-click="isCreatingNew = !isCreatingNew">
+		Add new question
+		<i class="glyphicon glyphicon-plus"></i>
+	</a>
+	<div class="question-form" ng-show="hasAuthorization() && isCreatingNew">
+		<div class="edit-controls col-md-12">Add New Registry</div>
+		<form name="addQuestionForm" class="edit-form col-md-12" ng-show="hasAuthorization() && isCreatingNew" role="form" novalidate>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addQuestionForm.question.$invalid }">
+				<label for="question" class="col-md-3">Question:</label>
+				<textarea class="question-add col-md-12" ng-model="question" name="question"></textarea>
+				<div ng-show="submitted && addQuestionForm.question.$invalid" class="help-block">
+					<p ng-show="addQuestionForm.question.$error.required">Question is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addQuestionForm.answer.$invalid }">
+				<label for="answer" class="col-md-3">Answer:</label>
+				<textarea class="question-add col-md-12" ng-model="answer" name="answer"></textarea>
+				<div ng-show="submitted && addQuestionForm.answer.$invalid" class="help-block">
+					<p ng-show="addQuestionForm.answer.$error.required">Answer is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && addQuestionForm.sort.$invalid }">
+				<label for="sort" class="col-md-3">Sort:</label>
+				<input class="question-add col-md-9" ng-model="sort" name="sort"></input>
+				<div ng-show="submitted && addQuestionForm.sort.$invalid" class="help-block">
+					<p ng-show="addQuestionForm.sort.$error.required">Sort is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group">
+				<button mean-token="'create-submit'" type="submit" class="submit col-md-5" ng-click="create(addQuestionForm.$valid)">Save</button>
+				<button type="cancel" class="cancel col-md-5" ng-click="isCreatingNew = !isCreatingNew">Cancel</button>
+			</div>
+		</form>
+	</div>
+	<div class="clearfix"></div>
+</div>

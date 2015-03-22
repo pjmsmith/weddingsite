@@ -1,0 +1,42 @@
+<h1>Room Blocks</h1>
+<section class="container-fluid">
+	<p class="lead">We have negotiated group rates at the hotels listed below. Use the links below to make your reservation and receive the group rate. These rooms are limited, so book early for the best deal!</p>
+	<p>The links below work best on a desktop browser. If you use a mobile browser, you will need to enter the group code manually. Alternatively, you can call the hotel and ask for the Carrade/Smith wedding group rate.</p>
+	<p>For Stanford Court reservations, please note that to receive the discounted group rate, you need to book the room for both Friday and Saturday nights. If you try to book using the group code for only one night, the system may tell you there are no available rooms. </p>
+	<div class="hotel-group" ng-controller="HotelController" ng-init="find(category)">
+		<!-- Powered By Yelp Icon goes here -->
+		<hotels>
+		</hotels>
+	</div>
+	<div class="clearfix"></div>
+	<alert>
+		<strong>Warning</strong>
+		<p>
+			Our wedding is in the middle of summer which means many hotels will be quickly booked up by tourists. 
+			<br/>
+			Please book your hotel and flights as early as possible!
+		</p>
+	</alert>
+	<div class="clearfix"></div>
+	<p class="lead">If you wish to stay elsewhere, try the search engines below</p>
+	<div class="travel-search hotel-search">
+		<ul>
+			<li><a href="http://www.hotels.com">Hotels.com</a></li>
+			<li><a href="https://www.google.com/hotelfinder">Google Hotel Finder</a></li>
+			<li><a href="https://www.airbnb.com">AirBnB</a></li>
+			<li><a href="http://www.priceline.com">Priceline</a></li>
+			<li><a href="http://www.travelocity.com">Travelocity</a></li>
+		</ul>
+	</div>
+	<p class="lead">Flying in from out of town or out of country?</p>
+	<div class="travel-search flight-search col-md-6">
+		<p>
+			&nbsp;
+			San Francisco can be reached via public transportation from all 3 of the international airports servicing the Bay Area: <a href="http://www.flysfo.com">San Francisco (SFO)</a>, <a href="http://www.oaklandairport.com">Oakland (OAK)</a>, and <a href="http://www.flysanjose.com">San Jose (SJC)</a>. The closest airport is SFO from which you can take <a href="http://www.bart.gov">BART</a> to downtown. You can also take BART from OAK. From SJC, you can take a bus to <a href="http://www.caltrain.com">Caltrain</a>, but this option will take longer than the other two airports.
+		</p>
+		<p>
+			Your hotel may also offer a shuttle service from the airport, so make sure to enquire.
+		</p>
+	</div>
+
+</section>

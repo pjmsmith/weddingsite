@@ -1,0 +1,100 @@
+[data-template] {
+	display: none;
+}
+
+* {
+	font-family: Arial;
+}
+
+.table-box {
+	/*border: 1px solid red;*/
+}
+
+#tablePopup {
+	display: none;
+	position: absolute;
+	border-radius: 5px;
+	border: 1px solid black;
+	width: 280px;
+	max-height: 400px;
+	overflow-y: auto;
+	background-color: white;
+	padding: 4px;
+	-webkit-box-shadow: 8px 9px 19px -4px rgba(0,0,0,0.75);
+	-moz-box-shadow: 8px 9px 19px -4px rgba(0,0,0,0.75);
+	box-shadow: 8px 9px 19px -4px rgba(0,0,0,0.75);
+}
+
+#tablePopup h4 {
+	margin: 8px;
+}
+
+#tablePopup select {
+	width: 180px;
+	margin-bottom: 8px;
+}
+
+#addToTable {
+	float: right;
+}
+
+#reference {
+	max-height: 786px;
+	width: auto;
+}
+
+#layoutOverlay {
+	position: absolute;
+}
+
+.full-table #addToTable, .full-table #guestSelect {
+	display: none;
+}
+
+#emptyTableMessage, .empty-table section {
+	display: none;
+}
+
+.empty-table #emptyTableMessage {
+	display: block;
+}
+
+.stats {
+	max-width: 350px;
+	padding: 5px;
+	font-weight: bold;
+	color: black;
+}
+
+.stats .left {
+	float: left;
+}
+
+.stats .right {
+	float: right;
+}
+
+.stats span {
+	min-width: 50px;
+	display: inline-block;
+}
+
+.buttons {
+	margin: 8px;
+}
+
+#tablePopup article {
+	margin: 8px;
+}
+
+.member-list {
+	padding: 8px;
+}
+
+.member-list .guest {
+	padding-top: 8px;
+}
+
+.remove-link {
+	float: right;
+}

@@ -1,0 +1,99 @@
+<div class="party-story" ng-repeat="partyMember in members | orderBy:'sort'">
+	<div class="story">
+		<div class="edit-controls col-md-12" ng-show="$parent.$parent.hasAuthorization() && partyMember._id">
+			<a class="btn edit" title="Edit" ng-show="$parent.$parent.hasAuthorization() && !partyMember.isEditing && partyMember._id" data-ng-click="partyMember.isEditing = !partyMember.isEditing">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn remove" title="Remove" ng-show="$parent.$parent.hasAuthorization() && partyMember._id" data-ng-click="remove(partyMember);">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+			Edit Person
+			<div class="clearfix"></div>
+		</div>
+		<a class="btn add" title="Add" ng-show="$parent.$parent.hasAuthorization() && !partyMember.isEditing && !partyMember._id" data-ng-click="partyMember.isEditing = !partyMember.isEditing">
+			Add New Person
+			<i class="glyphicon glyphicon-plus"></i>
+		</a>
+		<div class="edit-controls col-md-12" ng-show="$parent.$parent.hasAuthorization() && partyMember.isEditing && !partyMember._id">
+		Add New Person
+		</div>
+		<form name="editStoryForm" class="edit-form col-md-12" ng-show="$parent.$parent.hasAuthorization() && partyMember.isEditing" role="form" novalidate>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.role.$invalid }">
+				<label for="role" class="col-md-3">Role:</label>
+				<input class="story-edit col-md-9" ng-model="partyMember.role" name="role"></input>
+				<div ng-show="submitted && editStoryForm.role.$invalid" class="help-block">
+					<p ng-show="editStoryForm.role.$error.required">Role is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.name.$invalid }">
+				<label for="name" class="col-md-3">Name:</label>
+				<input class="story-edit col-md-9" ng-model="partyMember.name" name="name"></input>
+				<div ng-show="submitted && editStoryForm.name.$invalid" class="help-block">
+					<p ng-show="editStoryForm.name.$error.required">Name is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.group.$invalid }">
+				<label for="group" class="col-md-3">Group:</label>
+				<input class="story-edit col-md-9" ng-model="partyMember.group" name="group"></input>
+				<div ng-show="submitted && editStoryForm.group.$invalid" class="help-block">
+					<p ng-show="editStoryForm.group.$error.required">Group is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.photo.$invalid }">
+				<label for="photo" class="col-md-3">Photo:</label>
+				<input class="story-edit col-md-9" ng-model="partyMember.photo" name="photo"></input>
+				<div ng-show="submitted && editStoryForm.photo.$invalid" class="help-block">
+					<p ng-show="editStoryForm.photo.$error.required">Photo is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.photoClass.$invalid }">
+				<label for="photoClass" class="col-md-3">Photo Class:</label>
+				<input class="story-edit col-md-9" ng-model="partyMember.photoClass" name="photoClass"></input>
+				<div ng-show="submitted && editStoryForm.photoClass.$invalid" class="help-block">
+					<p ng-show="editStoryForm.photoClass.$error.required">Photo Class is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.sort.$invalid }">
+				<label for="sort" class="col-md-3">Sort:</label>
+				<input class="story-edit col-md-9" ng-model="partyMember.sort" name="sort"></input>
+				<div ng-show="submitted && editStoryForm.sort.$invalid" class="help-block">
+					<p ng-show="editStoryForm.sort.$error.required">Sort is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && editStoryForm.story.$invalid }">
+				<label for="story" class="col-md-3">Story:</label>
+				<textarea class="story-edit col-md-9" ng-model="partyMember.story"></textarea>
+				<div ng-show="submitted && editStoryForm.story.$invalid" class="help-block">
+					<p ng-show="editStoryForm.story.$error.required">Story is required</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="form-group">
+				<button mean-token="'update-submit'" type="submit" ng-click="$parent.$parent.update(partyMember, editStoryForm.$valid)" class="submit col-md-5">Save</button>
+				<button type="cancel" class="cancel col-md-5" ng-click="partyMember.isEditing = !partyMember.isEditing">Cancel</button>
+			</div>
+		</form>
+		<div id="story_{{partyMember._id}}" style="height: 50px"></div>
+		<div class="col-md-12 party-story" ng-show="!partyMember.isEditing">
+			<h3 class="party-story-name text-center" ng-show="partyMember._id"><u>{{partyMember.role}}</u><br/>{{partyMember.name}}</h3>
+			<img class="{{partyMember.photoClass}} party-story-photo" ng-class="{'desaturate' : partyMember.isCollapsed}" ng-if="partyMember.photo" ng-src="{{partyMember.photo}}" ng-click="partyMember.isCollapsed = !partyMember.isCollapsed"></img>
+			<div ng-show="partyMember.isCollapsed && partyMember.photo" class="carousel-caption" ng-click="partyMember.isCollapsed = !partyMember.isCollapsed">
+				<strong>+ Click for story +</strong>
+			</div>
+			<div collapse="partyMember.isCollapsed">
+				<article class="story-text">
+					<p ng-bind-html="partyMember.story">{{partyMember.story}}</p>
+				</article>
+				<a ng-click="goToNext(partyMember)">[Next]</a>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+<h1>Wedding Party</h1>
+<div class="container">
+	<div ng-cloak class="row" data-ng-controller="StoryController">
+		<div class="col-md-6">
+			<story-party party="bridesmaids" data-ng-controller="StoryController" ng-init="findGroup('bridesmaids')">
+			</story>
+		</div>
+		<div class="col-md-6">
+			<story-party party="groomsmen" data-ng-controller="StoryController" ng-init="findGroup('groomsmen')">
+			</story>
+		</div>
+		<div class="separator"></div>
+		<div class="col-md-12">
+			<story-party party="support" data-ng-controller="StoryController" ng-init="findGroup('support')">
+			</story>
+		</div>
+	</div>
+</div>
